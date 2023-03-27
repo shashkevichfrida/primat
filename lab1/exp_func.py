@@ -9,7 +9,7 @@ class exp():
         self.h = 0.00001
         self.n = (self.b - self.a) / self.h
         self.array_phi = [self.a + self.h * i for i in np.arange(self.n)]
-        self.phi = np.linspace(self.b, self.a, int(self.n) + 1)
+        self.phi = np.linspace(self.a, self.b, int(self.n) + 1)
 
     # Производные
     def difference_derivative_right(self):
@@ -93,7 +93,7 @@ class exp():
         axis3.set_ylabel('Y')
 
         # ананалитический график
-        axis4.plot(self.array_phi, array_real_values)
+        axis4.plot(self.array_phi,  self.phi * np.exp(self.phi))
         axis4.set_title("analytically", fontsize=7)
         axis4.grid()
         axis4.set_xlabel('X')

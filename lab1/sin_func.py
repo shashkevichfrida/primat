@@ -80,7 +80,7 @@ class sin():
         axis3.set_ylabel('Y')
 
         # ананалитический график
-        axis4.plot(self.array_phi, self.phi * np.cos(self.phi))
+        axis4.plot(self.array_phi, np.cos(self.phi))
         axis4.set_title("analytically", fontsize=7)
         axis4.grid()
         axis4.set_xlabel('X')
