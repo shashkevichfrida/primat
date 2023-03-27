@@ -24,12 +24,11 @@ class exp():
         return [(x * np.exp(x) for x in self.array_phi)]
 
     # Среднеквадратичное значение
-    def SKO(self, array):
-        sco = 0
-        average_value = sum(array) / len(array)
-        for x in np.arange(len(array)):
-            sco = sco + math.sqrt((1 / (len(array) - 1))) * (array[x] - average_value) ** 2
-        return sco
+
+    def SKO(self, array, array_h):
+        return math.sqrt((sum(x_i - mu for x_i, mu in zip(array, array_h)) ** 2) / self.n)
+
+
 
     # Площадь
     def rectangular_formula(self):
@@ -44,6 +43,8 @@ class exp():
 
 
     def func(self):
+        array_h = self.array_phi
+
 
         # Производные от функции sin(x)
 
@@ -59,9 +60,9 @@ class exp():
 
         # Среднеквадратичное отклонение
 
-        print("Cреднеквадратичное отклонение правой разностной производной", self.SKO(array_difference_derivative_right))
-        print("Cреднеквадратичное отклонение левой разностной производной", self.SKO(array_difference_derivative_left))
-        print("Cреднеквадратичное отклонение центральной разностной производной", self.SKO(array_difference_derivative_central))
+        print("Cреднеквадратичное отклонение правой разностной производной", self.SKO(array_difference_derivative_right, array_h))
+        print("Cреднеквадратичное отклонение левой разностной производной", self.SKO(array_difference_derivative_left, array_h))
+        print("Cреднеквадратичное отклонение центральной разностной производной", self.SKO(array_difference_derivative_central, array_h))
 
        # Площадь exp(x)
 
@@ -98,6 +99,41 @@ class exp():
         axis4.grid()
         axis4.set_xlabel('X')
         axis4.set_ylabel('Y')
-
-
         plt.show()
+
+        arr_sko_right = []
+        arr_sko_left = []
+        arr_sko_center = []
+        for x in self.phi[0:8]:
+            arr_sko_right.append(self.SKO(array_difference_derivative_right, array_h))
+            arr_sko_left.append(self.SKO(array_difference_derivative_left, array_h))
+            arr_sko_center.append(self.SKO(array_difference_derivative_central, array_h))
+            array_h = 2*np.array(array_h)
+
+        # зависимости
+        figure, (ax1, ax2, ax3) = plt.subplots(1, 3)
+
+        ax1.plot(arr_sko_right, self.phi[0:8])
+        axis3.set_title("вика придумает", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('вика придумает')
+        axis3.set_ylabel('вика придумает')
+
+        ax2.plot(arr_sko_left, self.phi[0:8])
+        axis3.set_title("вика придумает", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('вика придумает')
+        axis3.set_ylabel('вика придумает')
+
+        ax3.plot(arr_sko_center, self.phi[0:8])
+        axis3.set_title("вика придумает", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('вика придумает')
+        axis3.set_ylabel('вика придумает')
+        plt.show()
+
+
+
+
+
+

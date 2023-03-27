@@ -12,7 +12,7 @@ class sin():
         self.h = 0.00001
         self.n = (self.b - self.a) / self.h
         self.array_phi = [self.a + self.h * i for i in np.arange(self.n)]
-        self.phi = np.linspace(self.b, self.a, int(self.n) + 1)
+        self.phi = np.linspace(self.b, self.a, int(self.n) + 1) # шаги значение
 
     # Производные
     def difference_derivative_right(self):
@@ -25,6 +25,8 @@ class sin():
         return [(np.sin(x + 1) - np.sin(x - 1)) / 2 * self.h for x in self.array_phi]
 
     # Среднеквадратичное значение
+    def SKO(self, array, array_h):
+        return math.sqrt((sum(x_i - mu for x_i, mu in zip(array, array_h)) ** 2) / self.n)
 
     # Площадь
     def rectangular_formula(self):
@@ -37,6 +39,8 @@ class sin():
         return [sum((self.h / 4 * (np.sin(x - 1) + 4 * np.sin(x - 0.5) + np.sin(x))) for x in self.array_phi)]
 
     def func(self):
+        array_h = self.array_phi
+
         # Производные от функции sin(x)
 
         # Правая разностная производная
@@ -48,8 +52,9 @@ class sin():
 
         # Среднеквадратичное отклонение
 
-
-
+        print("Cреднеквадратичное отклонение правой разностной производной",self.SKO(array_difference_derivative_right, array_h))
+        print("Cреднеквадратичное отклонение левой разностной производной", self.SKO(array_difference_derivative_left, array_h))
+        print("Cреднеквадратичное отклонение центральной разностной производной", self.SKO(array_difference_derivative_central, array_h))
 
         # Площадь sin(x)
 
@@ -80,10 +85,41 @@ class sin():
         axis3.set_ylabel('Y')
 
         # ананалитический график
-        axis4.plot(self.array_phi, np.cos(self.phi))
+        axis4.plot(self.array_phi, self.phi * np.exp(self.phi))
         axis4.set_title("analytically", fontsize=7)
         axis4.grid()
         axis4.set_xlabel('X')
         axis4.set_ylabel('Y')
+        plt.show()
 
+
+        # графики зависимости
+        arr_sko_right = []
+        arr_sko_left = []
+        arr_sko_center = []
+        for x in self.phi[0:8]:
+            arr_sko_right.append(self.SKO(array_difference_derivative_right, array_h))
+            arr_sko_left.append(self.SKO(array_difference_derivative_left, array_h))
+            arr_sko_center.append(self.SKO(array_difference_derivative_central, array_h))
+            array_h = 2 * np.array(array_h)
+
+        figure, (ax1, ax2, ax3) = plt.subplots(1, 3)
+
+        ax1.plot(arr_sko_right, self.phi[0:8])
+        axis3.set_title("вика придумает", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('вика придумает')
+        axis3.set_ylabel('вика придумает')
+
+        ax2.plot(arr_sko_left, self.phi[0:8])
+        axis3.set_title("вика придумает", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('вика придумает')
+        axis3.set_ylabel('вика придумает')
+
+        ax3.plot(arr_sko_center, self.phi[0:8])
+        axis3.set_title("вика придумает", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('вика придумает')
+        axis3.set_ylabel('вика придумает')
         plt.show()
