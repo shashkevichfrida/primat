@@ -25,8 +25,6 @@ class sin():
         return [(np.sin(x + 1) - np.sin(x - 1)) / 2 * self.h for x in self.array_phi]
 
     # Среднеквадратичное значение
-    def SKO(self, array):
-        return [math.sqrt(1 / (self.n + 1) * sum((array[x] - statistics.mean(array)) ** 2 for x in np.arange(len(array))))]
 
     # Площадь
     def rectangular_formula(self):
@@ -50,10 +48,8 @@ class sin():
 
         # Среднеквадратичное отклонение
 
-        print("Cреднеквадратичное отклонение правой разностной производной",
-              self.SKO(array_difference_derivative_right))
-        print("Cреднеквадратичное отклонение левой разностной производной", self.SKO(array_difference_derivative_left))
-        print("Cреднеквадратичное отклонение центральной разностной производной", self.SKO(array_difference_derivative_central))
+
+
 
         # Площадь sin(x)
 
@@ -84,7 +80,7 @@ class sin():
         axis3.set_ylabel('Y')
 
         # ананалитический график
-        axis4.plot(self.array_phi, self.phi * np.exp(self.phi))
+        axis4.plot(self.array_phi, self.phi * np.cos(self.phi))
         axis4.set_title("analytically", fontsize=7)
         axis4.grid()
         axis4.set_xlabel('X')
