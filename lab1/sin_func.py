@@ -121,5 +121,5 @@ class sin():
         axis3.set_title("вика придумает", fontsize=7)
         axis3.grid()
         axis3.set_xlabel('вика придумает')
-        axis3.set_ylabel('вика придумает')
+        axis3.set_ylabel('вика придумай')
         plt.show()
