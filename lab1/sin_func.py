@@ -32,8 +32,15 @@ class sin():
     # Площадь
     def Newton_Leibniz_formula(self):
         return [np.sin(self.a) - np.sin(self.a)]
-    def rectangular_formula(self, h_i):
+
+    def rectangular_formula_left(self, h_i):
         return [sum((h_i * np.sin(x - 1)) for x in self.array_phi)]
+
+    def rectangular_formula_right(self, h_i):
+        return [sum((h_i * np.sin(x)) for x in self.array_phi)]
+
+    def rectangular_formula_central(self, h_i):
+        return [sum((h_i * np.sin(x - 0.5)) for x in self.array_phi)]
 
     def trapezoid_formula(self, h_i):
         return [sum((h_i / 2 * (np.sin(x - 1) + np.sin(x))) for x in self.array_phi)]
@@ -61,7 +68,9 @@ class sin():
 
         # Площадь sin(x)
 
-        print("Площадь sin(x) по формуле прямоугольников", self.rectangular_formula(self.h))
+        print("Площадь sin(x) по формуле левых прямоугольников", self.rectangular_formula_left(self.h))
+        print("Площадь sin(x) по формуле правых прямоугольников", self.rectangular_formula_right(self.h))
+        print("Площадь sin(x) по формуле средних прямоугольников", self.rectangular_formula_central(self.h))
         print("Площадь sin(x) по формуле трапеция", self.trapezoid_formula(self.h))
         print("Площадь sin(x) по формуле Симпсона", self.simpsons_formula(self.h))
         print("Площадь sin(x) полученная аналитически с помощью формулы Ньютона Лейбница",self.Newton_Leibniz_formula())
@@ -145,38 +154,56 @@ class sin():
         axis3.set_ylabel('Y')
         plt.show()
 
-        arr_rectangular_formula = []
+        arr_rectangular_formula_left = []
+        arr_rectangular_formula_right = []
+        arr_rectangular_formula_central = []
         arr_trapezoid_formula = []
         arr_simpsons_formula = []
         arr = [0.00001, 0.00002, 0.00008, 0.00016]
         for h in arr:
-            arr_rectangular_formula.append(self.rectangular_formula(h))
+            arr_rectangular_formula_left.append(self.rectangular_formula_left(h))
+            arr_rectangular_formula_right.append(self.rectangular_formula_right(h))
+            arr_rectangular_formula_central.append(self.rectangular_formula_central(h))
             arr_trapezoid_formula.append(self.trapezoid_formula(h))
             arr_simpsons_formula.append(self.simpsons_formula(h))
 
         # на одной плоскости
-        plt.plot(arr, arr_rectangular_formula, color='r', label='rectangular formula')
+        plt.plot(arr, arr_rectangular_formula_left, color='r', label='rectangular formula left')
+        plt.plot(arr, arr_rectangular_formula_right, color='c', label='rectangular formula right')
+        plt.plot(arr, arr_rectangular_formula_central, color='m', label='rectangular formula central')
         plt.plot(arr, arr_trapezoid_formula, color='b', label='trapezoid formula')
         plt.plot(arr, arr_simpsons_formula, color='g', label='simpsons formula')
 
         plt.legend()
         plt.show()
 
-        figure, (axisa1, axisa2, axisa3) = plt.subplots(1, 3)
+        figure, (axisa1, axisa2, axisa3, axisa4, axisa5) = plt.subplots(1, 5)
 
-        axisa1.plot(arr, arr_rectangular_formula)
-        axis3.set_title("rectangular formula", fontsize=7)
+        axisa1.plot(arr, arr_rectangular_formula_left)
+        axis3.set_title("rectangular formula left", fontsize=7)
         axis3.grid()
         axis3.set_xlabel('X')
         axis3.set_ylabel('Y')
 
-        axisa2.plot(arr, arr_trapezoid_formula)
+        axisa2.plot(arr, arr_rectangular_formula_right)
+        axis3.set_title("rectangular formula right", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
+
+        axisa3.plot(arr, arr_rectangular_formula_central)
+        axis3.set_title("rectangular formula central", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
+
+        axisa4.plot(arr, arr_trapezoid_formula)
         axis3.set_title("trapezoid formula", fontsize=7)
         axis3.grid()
         axis3.set_xlabel('X')
         axis3.set_ylabel('Y')
 
-        axisa3.plot(arr, arr_simpsons_formula)
+        axisa5.plot(arr, arr_simpsons_formula)
         axis3.set_title("simpsons formula", fontsize=7)
         axis3.grid()
         axis3.set_xlabel('X')
