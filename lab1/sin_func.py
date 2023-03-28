@@ -67,6 +67,16 @@ class sin():
         print("Площадь sin(x) полученная аналитически с помощью формулы Ньютона Лейбница",self.Newton_Leibniz_formula())
 
         # график правой разностной производной
+        #на одной плоскости
+        plt.plot(self.array_phi, array_difference_derivative_right, color='r', label='difference derivative right')
+        plt.plot(self.array_phi, array_difference_derivative_left, color='b', label='difference derivative left')
+        plt.plot(self.array_phi, array_difference_derivative_central, color='g', label='difference derivative central')
+        plt.plot(self.array_phi, np.cos(self.phi), color='y', label='analytically')
+        plt.legend()
+        plt.show()
+
+
+
         figure, (axis1, axis2, axis3, axis4) = plt.subplots(1, 4)
         axis1.plot(self.array_phi, array_difference_derivative_right)
         axis1.set_title("difference derivative right", fontsize=7)
@@ -107,8 +117,15 @@ class sin():
             arr_sko_center.append(self.SKO(array_difference_derivative_central, array_h))
             array_h = 2 * np.array(array_h)
 
-        figure, (ax1, ax2, ax3) = plt.subplots(1, 3)
+        # на одной плоскости
+        plt.plot(arr_sko_right, self.phi[0:8], color='r', label='difference derivative right SKO')
+        plt.plot(arr_sko_left, self.phi[0:8], color='b', label='difference derivative left sko')
+        plt.plot(arr_sko_center, self.phi[0:8], color='g', label='difference derivative central sko')
 
+        plt.legend()
+        plt.show()
+
+        figure, (ax1, ax2, ax3) = plt.subplots(1, 3)
         ax1.plot(arr_sko_right, self.phi[0:8])
         axis3.set_title("difference derivative right SKO", fontsize=7)
         axis3.grid()
@@ -126,6 +143,7 @@ class sin():
         axis3.grid()
         axis3.set_xlabel('X')
         axis3.set_ylabel('Y')
+        plt.show()
 
         arr_rectangular_formula = []
         arr_trapezoid_formula = []
@@ -136,6 +154,13 @@ class sin():
             arr_trapezoid_formula.append(self.trapezoid_formula(h))
             arr_simpsons_formula.append(self.simpsons_formula(h))
 
+        # на одной плоскости
+        plt.plot(arr, arr_rectangular_formula, color='r', label='rectangular formula')
+        plt.plot(arr, arr_trapezoid_formula, color='b', label='trapezoid formula')
+        plt.plot(arr, arr_simpsons_formula, color='g', label='simpsons formula')
+
+        plt.legend()
+        plt.show()
 
         figure, (axisa1, axisa2, axisa3) = plt.subplots(1, 3)
 
