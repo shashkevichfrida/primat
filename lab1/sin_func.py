@@ -29,6 +29,8 @@ class sin():
         return math.sqrt((sum(x_i - mu for x_i, mu in zip(array, array_h)) ** 2) / self.n)
 
     # Площадь
+    def Newton_Leibniz_formula(self):
+        return [np.sin(self.a) - np.sin(self.a)]
     def rectangular_formula(self):
         return [sum((self.h * np.sin(x - 1)) for x in self.array_phi)]
 
@@ -61,6 +63,7 @@ class sin():
         print("Площадь sin(x) по формуле прямоугольников", self.rectangular_formula())
         print("Площадь sin(x) по формуле трапеция", self.trapezoid_formula())
         print("Площадь sin(x) по формуле Симпсона", self.simpsons_formula())
+        print("Площадь sin(x) полученная аналитически с помощью формулы Ньютона Лейбница",self.Newton_Leibniz_formula())
 
         # график правой разностной производной
         figure, (axis1, axis2, axis3, axis4) = plt.subplots(1, 4)
@@ -106,20 +109,20 @@ class sin():
         figure, (ax1, ax2, ax3) = plt.subplots(1, 3)
 
         ax1.plot(arr_sko_right, self.phi[0:8])
-        axis3.set_title("вика придумает", fontsize=7)
+        axis3.set_title("difference derivative right SKO", fontsize=7)
         axis3.grid()
-        axis3.set_xlabel('вика придумает')
-        axis3.set_ylabel('вика придумает')
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
 
         ax2.plot(arr_sko_left, self.phi[0:8])
-        axis3.set_title("вика придумает", fontsize=7)
+        axis3.set_title("difference derivative left sko", fontsize=7)
         axis3.grid()
-        axis3.set_xlabel('вика придумает')
-        axis3.set_ylabel('вика придумает')
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
 
         ax3.plot(arr_sko_center, self.phi[0:8])
-        axis3.set_title("вика придумает", fontsize=7)
+        axis3.set_title("difference derivative central sko", fontsize=7)
         axis3.grid()
-        axis3.set_xlabel('вика придумает')
-        axis3.set_ylabel('вика придумает')
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
         plt.show()
