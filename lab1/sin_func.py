@@ -9,10 +9,11 @@ class sin():
     def __init__(self):
         self.a = -np.pi
         self.b = np.pi
-        self.h = 0.00001
+        self.h = 0.00016
         self.n = (self.b - self.a) / self.h
         self.array_phi = [self.a + self.h * i for i in np.arange(self.n)]
-        self.phi = np.linspace(self.b, self.a, int(self.n) + 1) # шаги значение
+        self.phi = np.linspace(self.b, self.a, int(self.n) + 1)
+
 
     # Производные
     def difference_derivative_right(self):
@@ -26,17 +27,19 @@ class sin():
 
     # Среднеквадратичное значение
     def SKO(self, array, array_h):
-        return math.sqrt((sum(x_i - mu for x_i, mu in zip(array, array_h)) ** 2) / self.n)
+        return math.sqrt((sum(x_i - x for x_i, x in zip(array, array_h)) ** 2) / self.n)
 
     # Площадь
-    def rectangular_formula(self):
-        return [sum((self.h * np.sin(x - 1)) for x in self.array_phi)]
+    def Newton_Leibniz_formula(self):
+        return [np.sin(self.a) - np.sin(self.a)]
+    def rectangular_formula(self, h_i):
+        return [sum((h_i * np.sin(x - 1)) for x in self.array_phi)]
 
-    def trapezoid_formula(self):
-        return [sum((self.h / 2 * (np.sin(x - 1) + np.sin(x))) for x in self.array_phi)]
+    def trapezoid_formula(self, h_i):
+        return [sum((h_i / 2 * (np.sin(x - 1) + np.sin(x))) for x in self.array_phi)]
 
-    def simpsons_formula(self):
-        return [sum((self.h / 4 * (np.sin(x - 1) + 4 * np.sin(x - 0.5) + np.sin(x))) for x in self.array_phi)]
+    def simpsons_formula(self, h_i):
+        return [sum((h_i / 4 * (np.sin(x - 1) + 4 * np.sin(x - 0.5) + np.sin(x))) for x in self.array_phi)]
 
     def func(self):
         array_h = self.array_phi
@@ -58,9 +61,10 @@ class sin():
 
         # Площадь sin(x)
 
-        print("Площадь sin(x) по формуле прямоугольников", self.rectangular_formula())
-        print("Площадь sin(x) по формуле трапеция", self.trapezoid_formula())
-        print("Площадь sin(x) по формуле Симпсона", self.simpsons_formula())
+        print("Площадь sin(x) по формуле прямоугольников", self.rectangular_formula(self.h))
+        print("Площадь sin(x) по формуле трапеция", self.trapezoid_formula(self.h))
+        print("Площадь sin(x) по формуле Симпсона", self.simpsons_formula(self.h))
+        print("Площадь sin(x) полученная аналитически с помощью формулы Ньютона Лейбница",self.Newton_Leibniz_formula())
 
         # график правой разностной производной
         figure, (axis1, axis2, axis3, axis4) = plt.subplots(1, 4)
@@ -85,7 +89,7 @@ class sin():
         axis3.set_ylabel('Y')
 
         # ананалитический график
-        axis4.plot(self.array_phi, self.phi * np.exp(self.phi))
+        axis4.plot(self.array_phi, np.cos(self.phi))
         axis4.set_title("analytically", fontsize=7)
         axis4.grid()
         axis4.set_xlabel('X')
@@ -106,20 +110,51 @@ class sin():
         figure, (ax1, ax2, ax3) = plt.subplots(1, 3)
 
         ax1.plot(arr_sko_right, self.phi[0:8])
-        axis3.set_title("вика придумает", fontsize=7)
+        axis3.set_title("difference derivative right SKO", fontsize=7)
         axis3.grid()
-        axis3.set_xlabel('вика придумает')
-        axis3.set_ylabel('вика придумает')
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
 
         ax2.plot(arr_sko_left, self.phi[0:8])
-        axis3.set_title("вика придумает", fontsize=7)
+        axis3.set_title("difference derivative left sko", fontsize=7)
         axis3.grid()
-        axis3.set_xlabel('вика придумает')
-        axis3.set_ylabel('вика придумает')
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
 
         ax3.plot(arr_sko_center, self.phi[0:8])
-        axis3.set_title("вика придумает", fontsize=7)
+        axis3.set_title("difference derivative central sko", fontsize=7)
         axis3.grid()
-        axis3.set_xlabel('вика придумает')
-        axis3.set_ylabel('вика придумай')
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
+
+        arr_rectangular_formula = []
+        arr_trapezoid_formula = []
+        arr_simpsons_formula = []
+        arr = [0.00001, 0.00002, 0.00008, 0.00016]
+        for h in arr:
+            arr_rectangular_formula.append(self.rectangular_formula(h))
+            arr_trapezoid_formula.append(self.trapezoid_formula(h))
+            arr_simpsons_formula.append(self.simpsons_formula(h))
+
+
+        figure, (axisa1, axisa2, axisa3) = plt.subplots(1, 3)
+
+        axisa1.plot(arr, arr_rectangular_formula)
+        axis3.set_title("rectangular formula", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
+
+        axisa2.plot(arr, arr_trapezoid_formula)
+        axis3.set_title("trapezoid formula", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
+
+        axisa3.plot(arr, arr_simpsons_formula)
+        axis3.set_title("simpsons formula", fontsize=7)
+        axis3.grid()
+        axis3.set_xlabel('X')
+        axis3.set_ylabel('Y')
+
         plt.show()
