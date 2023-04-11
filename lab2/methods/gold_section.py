@@ -3,7 +3,10 @@ import numpy as np
 def f(x):
     return np.sin(x) - np.log(x * x) - 1
 
-def gold_section_search(left, right, eps):
+def gold_section(left, right, eps):
+    middle = (right + left) / 2
+    array = np.array([left, right, middle, f(middle)])
+
     phi = (1 + np.sqrt(5)) / 2
     resphi = 2 - phi
     x1 = left + resphi * (right - left)
@@ -23,6 +26,8 @@ def gold_section_search(left, right, eps):
             f1 = f2
             x2 = right - resphi * (right - left)
             f2 = f(x2)
+        middle1 = (x1 + x2) / 2
 
-    return (x1 + x2) / 2
+    array = np.append(array, [left, right, middle, middle1])
+    return middle, f(middle), array
 

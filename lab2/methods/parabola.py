@@ -25,5 +25,5 @@ def parabola(a, b, eps):
                 x1 = xm
         if abs(x2 - x0) < eps:
             xmin = (x0 + x2) / 2
-            return xmin
+            return xmin, f(xmin)
     raise Exception("Не удалось найти минимум за заданное число итераций(")

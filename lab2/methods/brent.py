@@ -8,6 +8,8 @@ def f(x):
 
 
 def brent(left, right, eps):
+    array = []
+
     fa = f(left)
     fb = f(right)
     #if fa * fb >= 0:
@@ -48,4 +50,4 @@ def brent(left, right, eps):
             break
         c = s
         mflag = False
-    return s
+    return s, f(s), call, iteration
