@@ -7,12 +7,14 @@ def f(x):
 def dichotomy(left, right, epsilon):
     iteration = 0
     call = 0
-    middle = (right + left) / 2
-    array = np.array([left, right, middle, f(middle)])
 
+    middle = (right + left) / 2
     delta = epsilon * 0.1
+
     while right - left >= epsilon:
         call += 2
+        iteration += 1
+
         a = (left + right) / 2 - delta
         b = (left + right) / 2 + delta
 
@@ -23,8 +25,9 @@ def dichotomy(left, right, epsilon):
         elif f(a) == f(b):
             right = a
             left = b
+
     middle = (a + b) / 2
-    return middle, f(middle), call, iteration, array
+    return middle, f(middle), call, iteration
 
 
 

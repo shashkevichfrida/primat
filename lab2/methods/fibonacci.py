@@ -11,9 +11,8 @@ def fibonacci_sequence(n):
 
 
 def fibonacci(left, right, epsilon):
-    array = []
     iteration = 0
-    call = 0
+    call = 2
 
     n = 1
     while fibonacci_sequence(n + 2) <= (right - left) / epsilon:
@@ -31,6 +30,8 @@ def fibonacci(left, right, epsilon):
 
     while b - a > epsilon and a < b:
         iteration += 1
+        call += 1
+
         if (f1 > f2):
             n -= 1
             a = x1
@@ -45,6 +46,6 @@ def fibonacci(left, right, epsilon):
             x1 = a + fibonacci_sequence(n) / fibonacci_sequence(n + 2) * (b - a)
             f2 = f1
             f1 = f(x1)
-        call += 1
     middle = (a + b) / 2
-    return middle, f(middle), call, iteration, array
+
+    return middle, f(middle), call, iteration

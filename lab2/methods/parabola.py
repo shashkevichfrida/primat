@@ -3,27 +3,41 @@ import numpy as np
 def f(x):
     return np.sin(x) - np.log(x * x) - 1
 
-def parabola(a, b, eps):
-    x0, x1, x2 = a, (a + b) / 2, b
+def parabola(left, right, epsilon):
+    iteration = 0
+    call = 3
+
+    a = left
+    b = (left + right) / 2
+    c = right
+
+    f1 = f(a)
+    f2 = f(b)
+    f3 = f(c)
+
+
     for i in range(100):
-        f0, f1, f2 = f(x0), f(x1), f(x2)
-        if f1 < f0 and f1 < f2:
-            xm = x1 - 0.5 * ((x1 - x0)**2 * (f1 - f2) - (x1 - x2)**2 * (f1 - f0)) / ((x1 - x0) * (f1 - f2) - (x1 - x2) * (f1 - f0))
-            if xm < x1:
-                x2 = x1
+        iteration += 1
+        call += 1
+
+        if f2 < f1 and f2 < f3:
+            x = b - 0.5 * ((b - a)**2 * (f2 - f3) - (b - c)**2 * (f2 - f1)) / ((b - a) * (f2 - f3) - (b - c) * (f2 - f1))
+            if x < b:
+                c = b
             else:
-                x0 = x1
-            x1 = xm
+                a = b
+            b = x
         else:
-            if f0 < f2:
-                xm = 0.5 * (x0 + x1)
-                x2 = x1
-                x1 = xm
+            if f1 < f3:
+                x = 0.5 * (a + b)
+                c = b
+                b = x
             else:
-                xm = 0.5 * (x1 + x2)
-                x0 = x1
-                x1 = xm
-        if abs(x2 - x0) < eps:
-            xmin = (x0 + x2) / 2
-            return xmin, f(xmin)
+                x = 0.5 * (b + c)
+                a = b
+                b = x
+
+        if abs(c - a) < epsilon:
+            middle = (a + c) / 2
+            return middle, f(middle), call, iteration
     raise Exception("Не удалось найти минимум за заданное число итераций(")

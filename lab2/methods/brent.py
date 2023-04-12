@@ -1,53 +1,78 @@
 import numpy as np
 import math
-from scipy.optimize import minimize_scalar
-
 
 def f(x):
     return np.sin(x) - np.log(x * x) - 1
 
 
-def brent(left, right, eps):
-    array = []
+def brent(left, right, epsilon):
+    iteration = 0
+    call = 1
 
-    fa = f(left)
-    fb = f(right)
-    #if fa * fb >= 0:
-     #   raise ValueError("Brent's method requires f(a) and f(b) to have opposite signs")
-    if abs(fa) < abs(fb):
-        left, right = right, left
-        fa, fb = fb, fa
-    c = left
-    mflag = True
-    s = 0
-    d = 0
-    while abs(right - left) > eps:
-        fc = f(c)
-        if fa != fc and fb != fc:
-            s = (left*fb*fc)/((fa - fb)*(fa - fc)) + (right*fa*fc)/((fb - fa)*(fb - fc)) + (c*fa*fb)/((fc - fa)*(fc - fb))
-            if s > min((3*left + right)/4, (left + 3*right)/4) or s < left or s > right:
-                s = (left + right)/2
-                mflag = True
-        else:
-            s = (left + right)/2
-            mflag = True
-        if mflag:
-            d = abs(s - c)
-        else:
-            d = abs(s - old_s)/2
-        old_s = s
-        fs = f(s)
-        if fs > 0:
-            right = s
-            fb = fs
-        else:
-            left = s
-            fa = fs
-        if abs(fa) < abs(fb):
-            left, right = right, left
-            fa, fb = fb, fa
-        if abs(d) < eps:
+    golden_section = (3 - math.sqrt(5)) / 2
+
+
+    x = w = v = (left + right) / 2
+    fx = fw = fv = f(x)
+    d = e = right - left
+
+
+    while iteration < 10000000:
+        call += 1
+        iteration += 1
+
+        m = 0.5 * (right + left)
+        precision1 = epsilon * abs(x) + epsilon
+        precision2 = 2 * precision1
+
+        if abs(x - m) <= precision2 - 0.5 * (right - left):
             break
-        c = s
-        mflag = False
-    return s, f(s), call, iteration
+
+        r = q = p = 0
+
+        if abs(e) > precision1:
+            r = (x - w) * (fx - fv)
+            q = (x - v) * (fx - fw)
+            p = (x - v) * q - (x - w) * r
+            q = 2 * (q - r)
+            if q > 0:
+                p = -p
+            q = abs(q)
+            r = e
+            e = d
+
+
+        if abs(p) < abs(0.5 * q * r) and p > q * (left - x) and p < q * (right - x):
+            d = p / q
+            u = x + d
+
+            if u - left < precision2 or right - u < precision2:
+                d = precision1 if x < m else -precision1
+        else:
+            d = golden_section * (e if x < m else -e)
+            u = x + d
+
+            if u - left < precision2 or right - u < precision2:
+                d = precision1 if x < m else -precision1
+
+
+        fu = f(u)
+        if fu <= fx:
+            if u >= x:
+                left = x
+            else:
+                right = x
+            v, w, x = w, x, u
+            fv, fw, fx = fw, fx, fu
+        else:
+            if u >= x:
+                right = u
+            else:
+                left = u
+            if fu <= fw or w == x:
+                v, w, fv, fw = w, u, fw, fu
+            elif fu <= fv or v == x or v == w:
+                v, fv = u, fu
+
+    return x, f(x), iteration, call
+
