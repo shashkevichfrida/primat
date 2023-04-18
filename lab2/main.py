@@ -31,7 +31,7 @@ print(brent(1, 5, 0.0001))
 fig, ax = plt.subplots()
 ax.set_xlabel('x')
 ax.set_ylabel('y')
-x = np.linspace(-5, 5, 100)
+x = np.linspace(1, 5, 100)
 
 y = np.sin(x) - np.log(x * x) - 1
 

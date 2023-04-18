@@ -25,8 +25,7 @@ def dichotomy(left, right, epsilon):
         elif f(a) == f(b):
             right = a
             left = b
-
-    middle = (a + b) / 2
+        middle = (a + b) / 2
     return middle, f(middle), call, iteration
 
 
